@@ -1,24 +1,7 @@
 # vv-color-picker
 
-## Project setup
-```
-npm install
-```
+## Fork From
+[fork here](https://github.com/caohenghu/vue-colorpicker)
 
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
-
-### Compiles and minifies for production
-```
-npm run build
-```
-
-### Lints and fixes files
-```
-npm run lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+### 参考文章
+1.[基于canvas开发吸色功能](https://juejin.cn/post/6844904118926983182)
