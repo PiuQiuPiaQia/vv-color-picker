@@ -1,6 +1,6 @@
 # vv-color-picker
 
-![preview](https://github.com/329988300/vv-color-picker/blob/main/public/demo.png)
+![preview](https://github.com/329988300/vv-color-picker/blob/main/public/demo.jpg)
 
 ## Fork From
 [fork here](https://github.com/caohenghu/vue-colorpicker)
