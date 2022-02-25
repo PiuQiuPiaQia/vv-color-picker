@@ -4,6 +4,7 @@
             {{ name }}
         </span>
         <input v-model="modelColor" class="value" />
+        <div class="copy el-icon-copy-document" @click="clipColor"></div>
     </div>
 </template>
 
@@ -28,6 +29,18 @@ export default {
                 this.$emit("inputColor", val);
             }
         }
+    },
+    methods: {
+        clipColor() {
+            const input = document.createElement("input");
+            document.body.appendChild(input);
+            input.value = this.color;
+            input.focus();
+            input.select();
+            document.execCommand("copy");
+            input.remove();
+            this.$message.success("成功复制到剪切板！");
+        }
     }
 };
 </script>
@@ -40,7 +53,7 @@ export default {
     font-size: 12px;
     overflow: hidden;
     .name {
-        width: 60px;
+        width: 50px;
         height: 30px;
         float: left;
         display: flex;
@@ -62,6 +75,14 @@ export default {
         color: #666;
         background: #eceef0;
         box-sizing: border-box;
+    }
+    .copy {
+        width: 30px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: #e7e8e9;
+        cursor: pointer;
     }
 }
 </style>

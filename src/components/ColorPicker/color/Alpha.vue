@@ -112,8 +112,11 @@ export default {
         height: 100%;
         width: 4px;
         background: #fff;
-        box-shadow: 0 0 1px 0 rgba(0, 0, 0, 0.3);
+        border: 1px solid #f0f0f0;
+        border-radius: 1px;
+        box-shadow: 0 0 2px rgb(0 0 0 / 60%);
         pointer-events: none;
+        box-sizing: border-box;
     }
 }
 </style>

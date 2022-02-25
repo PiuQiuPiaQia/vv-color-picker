@@ -68,7 +68,7 @@ export default {
     mixins: [mixin],
     props: {
         color: {
-            type: String,
+            type: String | Object,
             default: "#000000"
         },
         theme: {

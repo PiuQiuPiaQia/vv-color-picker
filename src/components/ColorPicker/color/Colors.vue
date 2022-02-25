@@ -1,59 +1,27 @@
 <template>
     <div class="color-list">
         <ul class="colors theme">
-            <li
-                v-for="item in colorsTheme"
-                :key="item"
-                class="item"
-                @click="selectColor(item)"
-            >
-                <div
-                    :style="{ background: `url(${imgAlphaBase64})` }"
-                    class="alpha"
-                />
+            <li v-for="item in colorsTheme" :key="item" class="item" @click="selectColor(item)">
+                <div :style="{ background: `url(${imgAlphaBase64})` }" class="alpha" />
                 <div :style="{ background: item }" class="color" />
             </li>
         </ul>
         <ul class="colors gradient">
-            <li
-                v-for="item in colorsGradient"
-                :key="item"
-                class="item"
-                @click="selectColor(item)"
-            >
-                <div
-                    :style="{ background: `url(${imgAlphaBase64})` }"
-                    class="alpha"
-                />
+            <li v-for="item in colorsGradient" :key="item" class="item" @click="selectColor(item)">
+                <div :style="{ background: `url(${imgAlphaBase64})` }" class="alpha" />
                 <div :style="{ background: item }" class="color" />
             </li>
         </ul>
         <ul class="colors standard">
-            <li
-                v-for="item in colorsStandard"
-                :key="item"
-                class="item"
-                @click="selectColor(item)"
-            >
-                <div
-                    :style="{ background: `url(${imgAlphaBase64})` }"
-                    class="alpha"
-                />
+            <li v-for="item in colorsStandard" :key="item" class="item" @click="selectColor(item)">
+                <div :style="{ background: `url(${imgAlphaBase64})` }" class="alpha" />
                 <div :style="{ background: item }" class="color" />
             </li>
         </ul>
-        <div>最近使用：</div>
+        <div style="font-size:12px;">最近使用：</div>
         <ul v-if="colorsHistory.length" class="colors history">
-            <li
-                v-for="item in colorsHistory"
-                :key="item"
-                class="item"
-                @click="selectColor(item)"
-            >
-                <div
-                    :style="{ background: `url(${imgAlphaBase64})` }"
-                    class="alpha"
-                />
+            <li v-for="item in colorsHistory" :key="item" class="item" @click="selectColor(item)">
+                <div :style="{ background: `url(${imgAlphaBase64})` }" class="alpha" />
                 <div :style="{ background: item }" class="color" />
             </li>
         </ul>
@@ -66,31 +34,30 @@ export default {
     mixins: [mixin],
     props: {
         color: {
-            type: [String, Object],
-            default: () => {},
+            type: String,
+            default: "#000000"
         },
         colorsTheme: {
             type: Array,
-            default: () => [],
+            default: () => []
         },
         colorsGradient: {
             type: Array,
-            default: () => [],
+            default: () => []
         },
         colorsStandard: {
             type: Array,
-            default: () => [],
+            default: () => []
         },
         colorsHistoryKey: {
             type: String,
-            default: "",
-        },
+            default: ""
+        }
     },
     data() {
         return {
             imgAlphaBase64: "",
-            colorsHistory:
-                JSON.parse(localStorage.getItem(this.colorsHistoryKey)) || [],
+            colorsHistory: JSON.parse(localStorage.getItem(this.colorsHistoryKey)) || []
         };
     },
     created() {
@@ -118,8 +85,8 @@ export default {
             colors.unshift(color);
             this.colorsHistory = colors;
             localStorage.setItem(this.colorsHistoryKey, JSON.stringify(colors));
-        },
-    },
+        }
+    }
 };
 </script>
 

@@ -1,6 +1,5 @@
 <template>
     <div class="color-picker">
-        <img v-if="isOpenSucker" class="test-img" ref="cover" />
         <el-popover
             placement="bottom"
             width="250"
@@ -17,12 +16,12 @@
                     backgroundColor: value,
                 }"
             ></div>
-            <div v-if="visible" class="panel">
+            <div v-if="visible" class="panel" ref="popover">
                 <Panel
                     ref="panel"
                     theme="light"
                     :color="color.rgba"
-                    :sucker-hide="false"
+                    :sucker-hide="!hasSucker"
                     :sucker-canvas="suckerCanvas"
                     :sucker-area="suckerArea"
                     :colors-theme="tColor"
@@ -118,6 +117,9 @@ export default {
             }
             return colors;
         },
+        hasSucker() {
+            return this.selector;
+        },
     },
     watch: {
         value() {
@@ -145,7 +147,6 @@ export default {
             // console.log(color);
         },
         openSucker(isOpen) {
-            this.isOpenSucker = isOpen;
             if (isOpen) {
                 const dom = document.querySelector(this.selector);
                 if (!dom) {
@@ -157,35 +158,45 @@ export default {
                     left,
                     top,
                 } = dom.getBoundingClientRect();
-                html2canvas(dom).then((canvas) => {
-                    const ctx = canvas.getContext("2d");
-                    if (!ctx) {
-                        return;
-                    }
+                // 防止click阻塞动效
+                setTimeout(() => {
+                    html2canvas(dom, {
+                        useCORS: true,
+                    }).then((canvas) => {
+                        // 弹窗提前关闭
+                        if (!this.visible) return;
+                        const ctx = canvas.getContext("2d");
+                        if (!ctx) {
+                            return;
+                        }
+                        dom.append(canvas);
+                        Object.assign(canvas.style, {
+                            position: "absolute",
+                            left: 0 + "px",
+                            top: 0 + "px",
+                            opacity: 0,
+                            zIndex: 998,
+                            cursor: "none",
+                            userSelect: "none",
+                        });
 
-                    dom.append(canvas);
-                    Object.assign(canvas.style, {
-                        position: "absolute",
-                        left: 0 + "px",
-                        top: 0 + "px",
-                        opacity: 0,
-                        zIndex: 998,
-                        cursor: "none",
-                        userSelect: "none",
+                        this.suckerCanvas = canvas;
+                        this.suckerArea = [left, top, domW + left, domH + top];
                     });
-
-                    this.suckerCanvas = canvas;
-                    this.suckerArea = [left, top, domW + left, domH + top];
-                });
+                }, 0);
+            } else {
+                this.suckerCanvas?.remove();
             }
         },
         confirm() {
             this.visible = false;
             const { r, g, b, a } = this.color.rgba;
             this.$emit("input", `rgba(${r},${g},${b},${a})`);
-            // @ts-ignore
-            this.$refs["panel"].$refs["sucker"].isOpenSucker = false;
-            this.isOpenSucker = false;
+            this.$emit("change", `rgba(${r},${g},${b},${a})`);
+            if (this.hasSucker) {
+                // @ts-ignore
+                this.$refs["panel"].$refs["sucker"].isOpenSucker = false;
+            }
         },
         // 计算渐变过渡颜色
         gradient(startColor, endColor, step) {
@@ -237,6 +248,9 @@ export default {
             }
             return hexStr;
         },
+    },
+    beforeDestroy() {
+        this.suckerCanvas?.remove();
     },
     components: {
         Panel,
